@@ -584,12 +584,6 @@ declare namespace Eris {
     ringing: string[];
     unavailable: boolean;
   }
-  interface OldGroupChannel {
-    name: string;
-    ownerID: string;
-    icon: string;
-    type: Constants["ChannelTypes"]["GROUP_DM"];
-  }
   interface OldGuild {
     afkChannelID: string | null;
     afkTimeout: number;
@@ -704,8 +698,7 @@ declare namespace Eris {
     channelCreate: [channel: AnyChannel];
     channelDelete: [channel: AnyChannel];
     channelPinUpdate: [channel: TextableChannel, timestamp: number, oldTimestamp: number];
-    channelUpdate: [channel: AnyGuildChannel, oldChannel: OldGuildChannel | OldGuildTextChannel | OldGuildVoiceChannel]
-    | [channel: GroupChannel, oldChannel: OldGroupChannel];
+    channelUpdate: [channel: AnyGuildChannel, oldChannel: OldGuildChannel | OldGuildTextChannel | OldGuildVoiceChannel];
     connect: [id: number];
     debug: [message: string, id?: number];
     disconnect: [];
@@ -1960,35 +1953,6 @@ declare namespace Eris {
     results: (Message & { hit?: boolean })[][];
     totalResults: number;
   }
-  interface UserProfile {
-    connected_accounts: { id: string; name: string; type: string; verified: boolean }[];
-    mutual_guilds: { id: string; nick?: string }[];
-    premium_since?: number;
-    user: PartialUser & { flags: number };
-  }
-  interface UserSettings {
-    afk_timeout: number;
-    convert_emojis: boolean;
-    default_guilds_restricted: boolean;
-    detect_platform_accounts: boolean;
-    developer_mode: boolean;
-    enable_tts_command: boolean;
-    explicit_content_filter: number;
-    friend_source_flags: {
-      all: boolean; // not sure about other keys, abal heeeelp
-    };
-    inline_attachment_media: boolean;
-    inline_embed_media: boolean;
-    guild_positions: string[];
-    locale: string;
-    message_display_compact: boolean;
-    render_embeds: boolean;
-    render_reactions: boolean;
-    restricted_guilds: string[];
-    show_current_game: boolean;
-    status: string;
-    theme: string;
-  }
 
   class Base implements SimpleJSON {
     createdAt: number;
@@ -2231,7 +2195,7 @@ declare namespace Eris {
       channelID: string,
       options: EditChannelOptions,
       reason?: string
-    ): Promise<GroupChannel | AnyGuildChannel>;
+    ): Promise<AnyGuildChannel>;
     editChannelPermission(
       channelID: string,
       overwriteID: string,
@@ -2905,8 +2869,6 @@ declare namespace Eris {
     createdAt: CT extends "withMetadata" ? number : null;
     guild: CT extends "withMetadata"
       ? Guild // Invite with Metadata always has guild prop
-      : CH extends Extract<InviteChannel, GroupChannel> // Invite without Metadata
-        ? never // If the channel is GroupChannel, there is no guild
         : CH extends Exclude<InviteChannel, InvitePartialChannel> // Invite without Metadata and not GroupChanel
           ? Guild // If the invite channel is not partial
           : Guild | undefined; // If the invite channel is partial
