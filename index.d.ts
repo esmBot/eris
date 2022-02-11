@@ -2829,6 +2829,8 @@ declare namespace Eris {
     createdAt: CT extends "withMetadata" ? number : null;
     guild: CT extends "withMetadata"
       ? Guild // Invite with Metadata always has guild prop
+      : CH["type"] extends 3 // Invite without Metadata
+        ? never // If the channel is GroupChannel, there is no guild. Due to removal of GroupChannel, this has to be checked via channel type
         : CH extends Exclude<InviteChannel, InvitePartialChannel> // Invite without Metadata and not GroupChanel
           ? Guild // If the invite channel is not partial
           : Guild | undefined; // If the invite channel is partial
