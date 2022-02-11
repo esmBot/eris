@@ -3127,8 +3127,6 @@ declare namespace Eris {
     getAllUsersQueue: string;
     globalBucket: Bucket;
     guildCreateTimeout: NodeJS.Timeout | null;
-    guildSyncQueue: string[];
-    guildSyncQueueLength: number;
     heartbeatInterval: NodeJS.Timeout | null;
     id: number;
     lastHeartbeatAck: boolean;
@@ -3144,7 +3142,6 @@ declare namespace Eris {
     seq: number;
     sessionID: string | null;
     status: "connecting" | "disconnected" | "handshaking" | "identifying" | "ready" | "resuming";
-    unsyncedGuilds: number;
     ws: WebSocket | BrowserWebSocket | null;
     constructor(id: number, client: Client);
     checkReady(): void;
