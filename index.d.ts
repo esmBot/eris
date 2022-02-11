@@ -1901,19 +1901,6 @@ declare namespace Eris {
     };
   }
 
-  // Selfbot
-  type ConnectionVisibilityTypes = Constants["ConnectionVisibilityTypes"][keyof Constants["ConnectionVisibilityTypes"]];
-  interface Connection {
-    friend_sync: boolean;
-    id: string;
-    integrations: unknown[]; // TODO ????
-    name: string;
-    revoked: boolean;
-    type: string;
-    verified: boolean;
-    visibility: ConnectionVisibilityTypes;
-  }
-
   class Base implements SimpleJSON {
     createdAt: number;
     id: string;
