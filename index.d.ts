@@ -1913,27 +1913,6 @@ declare namespace Eris {
     verified: boolean;
     visibility: ConnectionVisibilityTypes;
   }
-  interface SearchOptions {
-    attachmentExtensions?: string;
-    attachmentFilename?: string;
-    authorID?: string;
-    channelIDs?: string[];
-    content?: string;
-    contextSize?: number;
-    embedProviders?: string;
-    embedTypes?: string;
-    has?: string;
-    limit?: number;
-    maxID?: string;
-    minID?: string;
-    offset?: number;
-    sortBy?: string;
-    sortOrder?: string;
-  }
-  interface SearchResults {
-    results: (Message & { hit?: boolean })[][];
-    totalResults: number;
-  }
 
   class Base implements SimpleJSON {
     createdAt: number;
