@@ -577,13 +577,6 @@ declare namespace Eris {
   }
 
   // Events
-  interface OldCall {
-    endedTimestamp?: number;
-    participants: string[];
-    region: string;
-    ringing: string[];
-    unavailable: boolean;
-  }
   interface OldGuild {
     afkChannelID: string | null;
     afkTimeout: number;
@@ -3057,9 +3050,7 @@ declare namespace Eris {
     removeMessageReaction(messageID: string, reaction: string): Promise<void>;
     /** @deprecated */
     removeMessageReaction(messageID: string, reaction: string, userID: string): Promise<void>;
-    ring(recipient: string[]): void;
     sendTyping(): Promise<void>;
-    syncCall(): void;
     unpinMessage(messageID: string): Promise<void>;
     unsendMessage(messageID: string): Promise<void>;
   }
