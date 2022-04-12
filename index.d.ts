@@ -2005,6 +2005,19 @@ declare namespace Eris {
     theme: string;
   }
 
+  export class Attachment extends Base {
+    constructor(data: BaseData);
+    content_type?: string;
+    ephemeral?: boolean;
+    filename: string;
+    height?: number;
+    id: string;
+    proxy_url: string;
+    size: number;
+    url: string;
+    width?: number;
+  }
+
   class Base implements SimpleJSON {
     createdAt: number;
     id: string;
