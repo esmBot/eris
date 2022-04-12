@@ -102,7 +102,7 @@ declare namespace Eris {
   type InteractionContent = Pick<WebhookPayload, "content" | "embeds" | "allowedMentions" | "tts" | "flags" | "components">;
   type InteractionContentEdit = Pick<WebhookPayload, "content" | "embeds" | "allowedMentions" | "components">;
   type InteractionDataOptions = InteractionDataOptionsSubCommand | InteractionDataOptionsSubCommandGroup | InteractionDataOptionsWithValue;
-  type InteractionDataOptionsAttachment = InteractionDataOptionWithValue<Constants["ApplicationCommandOptionTypes"]["ATTACHMENT"], Attachment>;
+  type InteractionDataOptionsAttachment = InteractionDataOptionWithValue<Constants["ApplicationCommandOptionTypes"]["ATTACHMENT"], string>;
   type InteractionDataOptionsBoolean = InteractionDataOptionWithValue<Constants["ApplicationCommandOptionTypes"]["BOOLEAN"], boolean>;
   type InteractionDataOptionsChannel = InteractionDataOptionWithValue<Constants["ApplicationCommandOptionTypes"]["CHANNEL"], string>;
   type InteractionDataOptionsInteger = InteractionDataOptionWithValue<Constants["ApplicationCommandOptionTypes"]["INTEGER"], number>;
