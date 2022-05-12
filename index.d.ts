@@ -1108,6 +1108,7 @@ declare namespace Eris {
   }
   interface Attachment {
     content_type?: string;
+    description?: string;
     ephemeral?: boolean;
     filename: string;
     height?: number;
@@ -2009,12 +2010,12 @@ declare namespace Eris {
   }
 
   export class Attachment extends Base {
-    content_type?: string;
+    contentType?: string;
     ephemeral?: boolean;
     filename: string;
     height?: number;
     id: string;
-    proxy_url: string;
+    proxyUrl: string;
     size: number;
     url: string;
     width?: number;
