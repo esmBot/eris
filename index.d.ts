@@ -2928,6 +2928,7 @@ declare namespace Eris {
         roles?: Collection<Role>;
         channels?: Collection<PartialChannel>;
         messages?: Collection<Message>;
+        attachments?: Collection<Attachment>;
       };
       options?: InteractionDataOptions[];
     };
