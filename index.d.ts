@@ -2923,12 +2923,12 @@ declare namespace Eris {
       type: ApplicationCommandTypes;
       target_id?: string;
       resolved?: {
-        users?: Collection<User>;
-        members?: Collection<Omit<Member, "user" | "deaf" | "mute">>;
-        roles?: Collection<Role>;
-        channels?: Collection<PartialChannel>;
-        messages?: Collection<Message>;
         attachments?: Collection<Attachment>;
+        channels?: Collection<PartialChannel>;
+        members?: Collection<Omit<Member, "user" | "deaf" | "mute">>;
+        messages?: Collection<Message>;
+        roles?: Collection<Role>;
+        users?: Collection<User>;
       };
       options?: InteractionDataOptions[];
     };
