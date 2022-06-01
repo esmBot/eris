@@ -275,11 +275,9 @@ declare namespace Eris {
     archived?: boolean;
     autoArchiveDuration?: AutoArchiveDuration;
     defaultAutoArchiveDuration?: AutoArchiveDuration;
-    icon?: string;
     invitable?: boolean;
     locked?: boolean;
     name?: string;
-    ownerID?: string;
     rtcRegion?: string | null;
     videoQualityMode?: VideoQualityMode;
   }
