@@ -380,7 +380,7 @@ declare namespace Eris {
     defaultImageFormat?: string;
     defaultImageSize?: number;
     /** @deprecated */
-    disableEvents?: { [s: string]: boolean };
+    disableEvents?: Record<string, boolean>;
     /** @deprecated */
     firstShardID?: number;
     gateway?: GatewayOptions;
