@@ -371,33 +371,66 @@ declare namespace Eris {
     /** @deprecated */
     agent?: HTTPSAgent;
     allowedMentions?: AllowedMentions;
+    /** @deprecated */
     autoreconnect?: boolean;
+    /** @deprecated */
     compress?: boolean;
+    /** @deprecated */
     connectionTimeout?: number;
     defaultImageFormat?: string;
     defaultImageSize?: number;
+    /** @deprecated */
     disableEvents?: { [s: string]: boolean };
+    /** @deprecated */
+    firstShardID?: number;
+    gateway?: GatewayOptions;
+    /** @deprecated */
+    getAllUsers?: boolean;
+    /** @deprecated */
+    guildCreateTimeout?: number;
+    /** @deprecated */
+    intents: number | IntentStrings[];
+    /** @deprecated */
+    largeThreshold?: number;
+    /** @deprecated */
+    lastShardID?: number;
+    /** @deprecated */
+    latencyThreshold?: number;
+    /** @deprecated */
+    maxReconnectAttempts?: number;
+    /** @deprecated */
+    maxResumeAttempts?: number;
+    /** @deprecated */
+    maxShards?: number | "auto";
+    messageLimit?: number;
+    opusOnly?: boolean;
+    /** @deprecated */
+    ratelimiterOffset?: number;
+    /** @deprecated */
+    reconnectDelay?: ReconnectDelayFunction;
+    requestTimeout?: number;
+    rest?: RequestHandlerOptions;
+    restMode?: boolean;
+    /** @deprecated */
+    seedVoiceConnections?: boolean;
+    ws?: unknown;
+  }
+  interface GatewayOptions {
+    autoreconnect?: boolean;
+    compress?: boolean;
+    connectionTimeout?: number;
+    disableEvents?: Record<string, boolean>;
     firstShardID?: number;
     getAllUsers?: boolean;
     guildCreateTimeout?: number;
     intents: number | IntentStrings[];
     largeThreshold?: number;
     lastShardID?: number;
-    /** @deprecated */
-    latencyThreshold?: number;
     maxReconnectAttempts?: number;
     maxResumeAttempts?: number;
     maxShards?: number | "auto";
-    messageLimit?: number;
-    opusOnly?: boolean;
-    /** @deprecated */
-    ratelimiterOffset?: number;
     reconnectDelay?: ReconnectDelayFunction;
-    requestTimeout?: number;
-    rest?: RequestHandlerOptions;
-    restMode?: boolean;
     seedVoiceConnections?: boolean;
-    ws?: unknown;
   }
   interface CommandClientOptions {
     argsSplitter?: (str: string) => string[];
@@ -3381,6 +3414,7 @@ declare namespace Eris {
     connectQueue: Shard[];
     connectTimeout: NodeJS.Timer | null;
     lastConnect: number;
+    options: GatewayOptions;
     constructor(client: Client);
     connect(shard: Shard): void;
     spawn(id: number): void;
