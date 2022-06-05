@@ -820,6 +820,7 @@ declare namespace Eris {
     lastShardID?: number;
     maxReconnectAttempts?: number;
     maxResumeAttempts?: number;
+    maxConcurrency?: number | "auto";
     maxShards?: number | "auto";
     reconnectDelay?: ReconnectDelayFunction;
     seedVoiceConnections?: boolean;
@@ -3411,11 +3412,12 @@ declare namespace Eris {
   }
 
   export class ShardManager extends Collection<Shard> implements SimpleJSON {
+    buckets: Map<number, number>;
     connectQueue: Shard[];
     connectTimeout: NodeJS.Timer | null;
     lastConnect: number;
     options: GatewayOptions;
-    constructor(client: Client);
+    constructor(client: Client, options?: GatewayOptions);
     connect(shard: Shard): void;
     spawn(id: number): void;
     tryConnect(): void;
