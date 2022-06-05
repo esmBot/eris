@@ -415,23 +415,6 @@ declare namespace Eris {
     seedVoiceConnections?: boolean;
     ws?: unknown;
   }
-  interface GatewayOptions {
-    autoreconnect?: boolean;
-    compress?: boolean;
-    connectionTimeout?: number;
-    disableEvents?: Record<string, boolean>;
-    firstShardID?: number;
-    getAllUsers?: boolean;
-    guildCreateTimeout?: number;
-    intents: number | IntentStrings[];
-    largeThreshold?: number;
-    lastShardID?: number;
-    maxReconnectAttempts?: number;
-    maxResumeAttempts?: number;
-    maxShards?: number | "auto";
-    reconnectDelay?: ReconnectDelayFunction;
-    seedVoiceConnections?: boolean;
-  }
   interface CommandClientOptions {
     argsSplitter?: (str: string) => string[];
     defaultCommandOptions?: CommandOptions;
@@ -824,6 +807,23 @@ declare namespace Eris {
   }
 
   // Gateway/REST
+  interface GatewayOptions {
+    autoreconnect?: boolean;
+    compress?: boolean;
+    connectionTimeout?: number;
+    disableEvents?: Record<string, boolean>;
+    firstShardID?: number;
+    getAllUsers?: boolean;
+    guildCreateTimeout?: number;
+    intents: number | IntentStrings[];
+    largeThreshold?: number;
+    lastShardID?: number;
+    maxReconnectAttempts?: number;
+    maxResumeAttempts?: number;
+    maxShards?: number | "auto";
+    reconnectDelay?: ReconnectDelayFunction;
+    seedVoiceConnections?: boolean;
+  }
   interface HTTPResponse {
     code: number;
     message: string;
