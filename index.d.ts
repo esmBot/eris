@@ -1211,6 +1211,7 @@ declare namespace Eris {
   }
   interface Attachment {
     content_type?: string;
+    description?: string;
     ephemeral?: boolean;
     filename: string;
     height?: number;
@@ -1596,6 +1597,7 @@ declare namespace Eris {
       ROLE:              8;
       MENTIONABLE:       9;
       NUMBER:            10;
+      ATTACHMENT:        11;
     };
     ApplicationCommandPermissionTypes: {
       ROLE: 1;
