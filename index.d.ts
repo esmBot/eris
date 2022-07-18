@@ -2221,7 +2221,6 @@ declare namespace Eris {
   }
 
   export class Channel extends Base {
-    client: Client;
     createdAt: number;
     id: string;
     mention: string;
@@ -3384,7 +3383,6 @@ declare namespace Eris {
   }
 
   export class Shard extends EventEmitter implements SimpleJSON {
-    client: Client;
     connectAttempts: number;
     connecting: boolean;
     connectTimeout: NodeJS.Timeout | null;
