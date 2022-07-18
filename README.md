@@ -23,7 +23,7 @@ npm i DonovanDMC/eris#everything
 <li><a href="https://github.com/Linker-123">@Linker-123</a> [<a href="https://github.com/abalabahaha/eris/pull/1336">Support modals</a>]</li>
 <li><a href="https://github.com/bsian03">@bsian03</a> [<a href="https://github.com/abalabahaha/eris/pull/1338">Remove all user account features</a>]</li>
 <li><a href="https://github.com/coolcalcacol">@coolcalcacol</a> [<a href="https://github.com/abalabahaha/eris/pull/1358">Attachment type</a>]</li>
-<li><a href="https://github.com/flamableassassin">@flamableassassin</a> [<a href="https://github.com/abalabahaha/eris/pull/1369">Adding support for type 24 message</a>]</li>
+
 <li><a href="https://github.com/coolcalcacol">@coolcalcacol</a> [<a href="https://github.com/abalabahaha/eris/pull/1372">feat(permissions): Slash Permissions v2</a>]</li>
 <li><a href="https://github.com/DonovanDMC">@DonovanDMC</a> [<a href="https://github.com/abalabahaha/eris/pull/1379">Overall Consistency Fixes & Minor Feature Additions</a>]</li>
 <li><a href="https://github.com/DonovanDMC">@DonovanDMC</a> [<a href="https://github.com/abalabahaha/eris/pull/1384">feat(options): Gateway Options</a>]</li>
@@ -82,6 +82,7 @@ npm i DonovanDMC/eris#everything
 <li>(Merged) <a href="https://github.com/Dramex">@Dramex</a> [<a href="https://github.com/abalabahaha/eris/pull/1366">fix updating bot username, avatar, discriminator returns undefined</a>]</li>
 <li>(Merged) <a href="https://github.com/DonovanDMC">@DonovanDMC</a> [<a href="https://github.com/abalabahaha/eris/pull/1367">fix(getGuildAuditLog): Users Being Added To Cache Too late</a>]</li>
 <li>(Various Issues) <a href="https://github.com/oathompsonjones">@oathompsonjones</a> [<a href="https://github.com/abalabahaha/eris/pull/1368">Corrected various typings</a>]</li>
+<li>(Folded In To <a href="https://github.com/abalabahaha/eris/pull/1390">#1390</a>) <a href="https://github.com/flamableassassin">@flamableassassin</a> [<a href="https://github.com/abalabahaha/eris/pull/1369">Adding support for type 24 message</a>]</li>
 <li>(Merged) <a href="https://github.com/HcgRandon">@HcgRandon</a> [<a href="https://github.com/abalabahaha/eris/pull/1370">Improved max_concurrency aware ShardManager</a>]</li>
 <li>(Merged) <a href="https://github.com/DonovanDMC">@DonovanDMC</a> [<a href="https://github.com/abalabahaha/eris/pull/1376">fix(createRole): Split options into separate overloads</a>]</li>
 
