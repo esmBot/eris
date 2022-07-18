@@ -3641,7 +3641,7 @@ declare namespace Eris {
   export class VoiceChannel extends GuildChannel implements Invitable {
     bitrate: number;
     rtcRegion: string | null;
-    type: TextVoiceChannelTypes;
+    type: GuildVoiceChannelTypes;
     userLimit: number;
     videoQualityMode: VideoQualityMode;
     voiceMembers: Collection<Member>;
