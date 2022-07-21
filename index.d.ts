@@ -108,6 +108,7 @@ declare namespace Eris {
   type GuildScheduledEventEntityTypes = Constants["GuildScheduledEventEntityTypes"][keyof Constants["GuildScheduledEventEntityTypes"]];
   type GuildScheduledEventPrivacyLevel = Constants["GuildScheduledEventPrivacyLevel"][keyof Constants["GuildScheduledEventPrivacyLevel"]];
   type GuildScheduledEventStatus = Constants["GuildScheduledEventStatus"][keyof Constants["GuildScheduledEventStatus"]];
+  type HubType = Constants["HubTypes"][keyof Constants["HubTypes"]];
   type NSFWLevel = Constants["GuildNSFWLevels"][keyof Constants["GuildNSFWLevels"]];
   type PossiblyUncachedGuild = Guild | Uncached;
   type PossiblyUncachedGuildScheduledEvent = GuildScheduledEvent | Uncached;
@@ -1961,6 +1962,11 @@ declare namespace Eris {
       SAFE:           2;
       AGE_RESTRICTED: 3;
     };
+    HubTypes: {
+    DEFAULT:     0;
+    HIGH_SCHOOL: 1;
+    COLLEGE:     2;
+    };
     ImageFormats: [
       "jpg",
       "jpeg",
@@ -2820,6 +2826,7 @@ declare namespace Eris {
     events: Collection<GuildScheduledEvent>;
     explicitContentFilter: ExplicitContentFilter;
     features: GuildFeatures[];
+    hubType: HubType | null;
     icon: string | null;
     iconURL: string | null;
     id: string;
