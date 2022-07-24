@@ -28,6 +28,7 @@ declare namespace Eris {
   type ApplicationCommandOptionMinMaxValue<T extends "INTEGER" | "NUMBER"> = (ApplicationCommandOption<T> & ApplicationCommandOptionsMinMaxValue);
   type ApplicationCommandOptionMinMaxLength<T extends "STRING"> = (ApplicationCommandOption<T> & ApplicationCommandOptionsMinMaxLength);
 
+  type ApplicationCommandOptionsAttachment = ApplicationCommandOption<"ATTACHMENT">;
   type ApplicationCommandOptionsBoolean = ApplicationCommandOption<"BOOLEAN">;
   type ApplicationCommandOptionsChannel = ApplicationCommandOptionChannelTypes<"CHANNEL">;
   type ApplicationCommandOptionsInteger = ApplicationCommandOptionAutocomplete<"INTEGER"> | ApplicationCommandOptionChoices<"INTEGER"> | ApplicationCommandOptionMinMaxValue<"INTEGER">;
@@ -38,7 +39,7 @@ declare namespace Eris {
   type ApplicationCommandOptionsUser = ApplicationCommandOption<"USER">;
 
   type ApplicationCommandOptionsWithOptions = ApplicationCommandOptionsSubCommand | ApplicationCommandOptionsSubCommandGroup;
-  type ApplicationCommandOptionsWithValue = ApplicationCommandOptionsString | ApplicationCommandOptionsInteger | ApplicationCommandOptionsBoolean | ApplicationCommandOptionsUser | ApplicationCommandOptionsChannel | ApplicationCommandOptionsRole | ApplicationCommandOptionsMentionable | ApplicationCommandOptionsNumber;
+  type ApplicationCommandOptionsWithValue = ApplicationCommandOptionsString | ApplicationCommandOptionsInteger | ApplicationCommandOptionsBoolean | ApplicationCommandOptionsUser | ApplicationCommandOptionsChannel | ApplicationCommandOptionsRole | ApplicationCommandOptionsMentionable | ApplicationCommandOptionsNumber | ApplicationCommandOptionsAttachment;
   type ApplicationCommandStructure = ChatInputApplicationCommandStructure | MessageApplicationCommandStructure | UserApplicationCommandStructure;
   type ApplicationCommandStructureConversion<T extends ApplicationCommandStructure, W extends boolean = false> = T extends ChatInputApplicationCommandStructure ?
     ChatInputApplicationCommand<W> : T extends MessageApplicationCommandStructure ?
@@ -127,6 +128,7 @@ declare namespace Eris {
   type InteractionContentEdit = Omit<InteractionContent, "tts" | "flags">;
   type InteractionDataOption<T extends Exclude<keyof Constants["ApplicationCommandOptionTypes"], "SUB_COMMAND" | "SUB_COMMAND_GROUP">, V = boolean | number | string> = InteractionDataOptionsBase<Constants["ApplicationCommandOptionTypes"][T], V>;
   type InteractionDataOptions = InteractionDataOptionsWithOptions | InteractionDataOptionsWithValue;
+  type InteractionDataOptionsAttachment = InteractionDataOption<"ATTACHMENT", string>;
   type InteractionDataOptionsBoolean = InteractionDataOption<"BOOLEAN", boolean>;
   type InteractionDataOptionsChannel = InteractionDataOption<"CHANNEL", string>;
   type InteractionDataOptionsInteger = InteractionDataOption<"INTEGER", number>;
@@ -136,7 +138,7 @@ declare namespace Eris {
   type InteractionDataOptionsString = InteractionDataOption<"STRING", string>;
   type InteractionDataOptionsUser = InteractionDataOption<"USER", string>;
   type InteractionDataOptionsWithOptions = InteractionDataOptionsSubCommand | InteractionDataOptionsSubCommandGroup;
-  type InteractionDataOptionsWithValue = InteractionDataOptionsString | InteractionDataOptionsInteger | InteractionDataOptionsBoolean | InteractionDataOptionsUser | InteractionDataOptionsChannel | InteractionDataOptionsRole | InteractionDataOptionsMentionable | InteractionDataOptionsNumber;
+  type InteractionDataOptionsWithValue = InteractionDataOptionsString | InteractionDataOptionsInteger | InteractionDataOptionsBoolean | InteractionDataOptionsUser | InteractionDataOptionsChannel | InteractionDataOptionsRole | InteractionDataOptionsMentionable | InteractionDataOptionsNumber | InteractionDataOptionsAttachment;
   type InteractionResponse = InteractionResponseAutocomplete | InteractionResponseDeferred | InteractionResponseMessage;
   type InteractionTypes = Constants["InteractionTypes"][keyof Constants["InteractionTypes"]];
 
@@ -1152,6 +1154,7 @@ declare namespace Eris {
     options?: InteractionDataOptions[];
   }
   interface CommandInteractionResolvedData {
+    attachments?: Collection<Attachment>;
     channels?: Collection<AnyChannel>;
     members?: Collection<Member>;
     messages?: Collection<Message>;
@@ -2291,6 +2294,18 @@ declare namespace Eris {
     };
   }
 
+  export class Attachment extends Base {
+    contentType?: string;
+    ephemeral?: boolean;
+    filename: string;
+    height?: number;
+    id: string;
+    proxyUrl: string;
+    size: number;
+    url: string;
+    width?: number;
+    constructor(data: BaseData);
+  }
   class Base implements SimpleJSON {
     createdAt: number;
     id: string;
