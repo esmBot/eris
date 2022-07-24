@@ -238,7 +238,7 @@ declare namespace Eris {
     max_value?: number;
     min_value?: number;
   }
-interface ApplicationCommandOptionsMinMaxLength {
+  interface ApplicationCommandOptionsMinMaxLength {
     max_length?: number;
     min_length?: number;
   }
