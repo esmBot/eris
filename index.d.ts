@@ -474,8 +474,10 @@ declare namespace Eris {
     decodeReasons?: boolean;
     disableLatencyCompensation?: boolean;
     domain?: string;
+    followRateLimits?: boolean;
     https?: boolean;
     latencyThreshold?: number;
+    port?: number;
     ratelimiterOffset?: number;
     requestTimeout?: number;
   }
