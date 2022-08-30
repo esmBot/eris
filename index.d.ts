@@ -2,9 +2,7 @@ import { EventEmitter } from "events";
 import { Duplex, Readable as ReadableStream, Stream } from "stream";
 import { Agent as HTTPSAgent } from "https";
 import { IncomingMessage, ClientRequest, IncomingHttpHeaders } from "http";
-import OpusScript = require("opusscript"); // Thanks TypeScript
 import { URL } from "url";
-import { Socket as DgramSocket } from "dgram";
 import * as WebSocket from "ws";
 
 declare function Eris(token: string, options?: Eris.ClientOptions): Eris.Client;
@@ -162,7 +160,6 @@ declare namespace Eris {
   type PremiumTypes = Constants["PremiumTypes"][keyof Constants["PremiumTypes"]];
 
   // Voice
-  type ConverterCommand = "./ffmpeg" | "./avconv" | "ffmpeg" | "avconv";
   type StageInstancePrivacyLevel = Constants["StageInstancePrivacyLevel"][keyof Constants["StageInstancePrivacyLevel"]];
 
   // Webhook
@@ -446,14 +443,12 @@ declare namespace Eris {
     maxResumeAttempts?: number;
     maxShards?: number | "auto";
     messageLimit?: number;
-    opusOnly?: boolean;
     /** @deprecated */
     ratelimiterOffset?: number;
     reconnectDelay?: ReconnectDelayFunction;
     requestTimeout?: number;
     rest?: RequestHandlerOptions;
     restMode?: boolean;
-    seedVoiceConnections?: boolean;
     shardConcurrency?: number | "auto";
     ws?: unknown;
   }
@@ -818,9 +813,6 @@ declare namespace Eris {
     unavailableGuildCreate: [guild: UnavailableGuild];
     unknown: [packet: RawPacket, id?: number];
     userUpdate: [user: User, oldUser: PartialUser | null];
-    voiceChannelJoin: [member: Member, channel: AnyVoiceChannel];
-    voiceChannelLeave: [member: Member, channel: AnyVoiceChannel];
-    voiceChannelSwitch: [member: Member, newChannel: AnyVoiceChannel, oldChannel: AnyVoiceChannel];
     voiceStateUpdate: [member: Member, oldState: OldVoiceState];
     warn: [message: string, id?: number];
     webhooksUpdate: [data: WebhookData];
@@ -1410,12 +1402,6 @@ declare namespace Eris {
   }
 
   // Voice
-  interface JoinVoiceChannelOptions {
-    opusOnly?: boolean;
-    selfDeaf?: boolean;
-    selfMute?: boolean;
-    shared?: boolean;
-  }
   interface StageInstanceOptions {
     privacyLevel?: StageInstancePrivacyLevel;
     topic?: string;
@@ -1424,42 +1410,10 @@ declare namespace Eris {
     id: string;
     voiceState: OldVoiceState;
   }
-  interface VoiceConnectData {
-    channel_id: string;
-    endpoint: string;
-    session_id: string;
-    token: string;
-    user_id: string;
-  }
-  interface VoiceResourceOptions {
-    encoderArgs?: string[];
-    format?: string;
-    frameDuration?: number;
-    frameSize?: number;
-    inlineVolume?: boolean;
-    inputArgs?: string[];
-    pcmSize?: number;
-    samplingRate?: number;
-    voiceDataTimeout?: number;
-  }
-  interface VoiceServerUpdateData extends Omit<VoiceConnectData, "channel_id"> {
-    guild_id: string;
-    shard: Shard;
-  }
   interface VoiceStateOptions {
     channelID: string;
     requestToSpeakTimestamp?: Date | null;
     suppress?: boolean;
-  }
-  interface VoiceStreamCurrent {
-    buffer: Buffer | null;
-    bufferingTicks: number;
-    options: VoiceResourceOptions;
-    pausedTime?: number;
-    pausedTimestamp?: number;
-    playTime: number;
-    startTime: number;
-    timeout: NodeJS.Timeout | null;
   }
 
   // Webhook
@@ -2228,7 +2182,6 @@ declare namespace Eris {
     userGuildSettings: { [s: string]: GuildSettings };
     users: Collection<User>;
     userSettings: UserSettings;
-    voiceConnections: VoiceConnectionManager;
     constructor(token: string, options?: ClientOptions);
     acceptInvite(inviteID: string): Promise<Invite<"withoutCount">>;
     addGroupRecipient(groupID: string, userID: string): Promise<void>;
@@ -2243,7 +2196,6 @@ declare namespace Eris {
     bulkEditCommandPermissions(guildID: string, permissions: { id: string; permissions: ApplicationCommandPermissions[] }[]): Promise<GuildApplicationCommandPermissions[]>;
     bulkEditCommands(commands: ApplicationCommandStructure[]): Promise<ApplicationCommand[]>;
     bulkEditGuildCommands(guildID: string, commands: ApplicationCommandStructure[]): Promise<ApplicationCommand[]>;
-    closeVoiceConnection(guildID: string): void;
     connect(): Promise<void>;
     createAutoModerationRule(guildID: string, rule: CreateAutoModerationRuleOptions): Promise<AutoModerationRule>;
     createChannel(guildID: string, name: string): Promise<TextChannel>;
@@ -2581,11 +2533,9 @@ declare namespace Eris {
     getWebhook(webhookID: string, token?: string): Promise<Webhook>;
     getWebhookMessage(webhookID: string, token: string, messageID: string): Promise<Message<GuildTextableChannel>>;
     joinThread(channelID: string, userID?: string): Promise<void>;
-    joinVoiceChannel(channelID: string, options?: JoinVoiceChannelOptions): Promise<VoiceConnection>;
     kickGuildMember(guildID: string, userID: string, reason?: string): Promise<void>;
     leaveGuild(guildID: string): Promise<void>;
     leaveThread(channelID: string, userID?: string): Promise<void>;
-    leaveVoiceChannel(channelID: string): void;
     off<K extends keyof ClientEvents>(event: K, listener: (...args: ClientEvents[K]) => void): this;
     off(event: string, listener: (...args: any[]) => void): this;
     once<K extends keyof ClientEvents>(event: K, listener: (...args: ClientEvents[K]) => void): this;
@@ -2904,7 +2854,6 @@ declare namespace Eris {
     getWidgetSettings(): Promise<Widget>;
     kickMember(userID: string, reason?: string): Promise<void>;
     leave(): Promise<void>;
-    leaveVoiceChannel(): void;
     permissionsOf(memberID: string | Member | MemberRoles): Permission;
     pruneMembers(options?: PruneMemberOptions): Promise<number>;
     removeMemberRole(memberID: string, roleID: string, reason?: string): Promise<void>;
@@ -3328,24 +3277,6 @@ declare namespace Eris {
     constructor(data: Overwrite);
   }
 
-  export class Piper extends EventEmitter {
-    converterCommand: ConverterCommand;
-    dataPacketCount: number;
-    encoding: boolean;
-    libopus: boolean;
-    opus: OpusScript | null;
-    opusFactory: () => OpusScript;
-    volumeLevel: number;
-    constructor(converterCommand: string, opusFactory: OpusScript);
-    addDataPacket(packet: unknown): void;
-    encode(source: string | Stream, options: VoiceResourceOptions): boolean;
-    getDataPacket(): Buffer;
-    reset(): void;
-    resetPackets(): void;
-    setVolume(volume: number): void;
-    stop(e: Error, source: Duplex): void;
-  }
-
   export class PrivateChannel extends Channel implements Textable, Pinnable {
     lastMessageID: string;
     messages: Collection<Message<this>>;
@@ -3525,34 +3456,6 @@ declare namespace Eris {
     toJSON(props?: string[]): JSONCache;
   }
 
-  export class SharedStream extends EventEmitter {
-    bitrate: number;
-    channels: number;
-    current?: VoiceStreamCurrent;
-    ended: boolean;
-    frameDuration: number;
-    piper: Piper;
-    playing: boolean;
-    samplingRate: number;
-    speaking: boolean;
-    voiceConnections: Collection<VoiceConnection>;
-    volume: number;
-    add(connection: VoiceConnection): void;
-    emit<K extends keyof StreamEvents>(event: K, ...args: StreamEvents[K]): boolean;
-    emit(event: string, ...args: any[]): boolean;
-    off<K extends keyof StreamEvents>(event: K, listener: (...args: StreamEvents[K]) => void): this;
-    off(event: string, listener: (...args: any[]) => void): this;
-    once<K extends keyof StreamEvents>(event: K, listener: (...args: StreamEvents[K]) => void): this;
-    once(event: string, listener: (...args: any[]) => void): this;
-    play(resource: ReadableStream | string, options?: VoiceResourceOptions): void;
-    remove(connection: VoiceConnection): void;
-    setSpeaking(value: boolean): void;
-    setVolume(volume: number): void;
-    stopPlaying(): void;
-    on<K extends keyof StreamEvents>(event: K, listener: (...args: StreamEvents[K]) => void): this;
-    on(event: string, listener: (...args: any[]) => void): this;
-  }
-
   export class StageChannel extends VoiceChannel {
     topic?: string;
     type: Constants["ChannelTypes"]["GUILD_STAGE_VOICE"];
@@ -3723,93 +3626,7 @@ declare namespace Eris {
     voiceMembers: Collection<Member>;
     createInvite(options?: CreateInviteOptions, reason?: string): Promise<Invite<"withMetadata", VoiceChannel>>;
     getInvites(): Promise<(Invite<"withMetadata", VoiceChannel>)[]>;
-    join(options?: JoinVoiceChannelOptions): Promise<VoiceConnection>;
     leave(): void;
-  }
-
-  export class VoiceConnection extends EventEmitter implements SimpleJSON {
-    bitrate: number;
-    channelID: string | null;
-    channels: number;
-    connecting: boolean;
-    connectionTimeout: NodeJS.Timeout | null;
-    current?: VoiceStreamCurrent | null;
-    ended?: boolean;
-    endpoint: URL;
-    frameDuration: number;
-    frameSize: number;
-    heartbeatInterval: NodeJS.Timeout | null;
-    id: string;
-    mode?: string;
-    modes?: string;
-    /** Optional dependencies OpusScript (opusscript) or OpusEncoder (@discordjs/opus) */
-    opus: { [userID: string]: unknown };
-    opusOnly: boolean;
-    paused: boolean;
-    pcmSize: number;
-    piper: Piper;
-    playing: boolean;
-    ready: boolean;
-    receiveStreamOpus?: VoiceDataStream | null;
-    receiveStreamPCM?: VoiceDataStream | null;
-    reconnecting: boolean;
-    samplingRate: number;
-    secret: Buffer;
-    sendBuffer: Buffer;
-    sendNonce: Buffer;
-    sequence: number;
-    shard: Shard | Record<string, never>;
-    shared: boolean;
-    speaking: boolean;
-    ssrc?: number;
-    ssrcUserMap: { [s: number]: string };
-    timestamp: number;
-    udpIP?: string;
-    udpPort?: number;
-    udpSocket: DgramSocket | null;
-    volume: number;
-    ws: BrowserWebSocket | WebSocket | null;
-    constructor(id: string, options?: { shard?: Shard; shared?: boolean; opusOnly?: boolean });
-    connect(data: VoiceConnectData): NodeJS.Timer | void;
-    disconnect(error?: Error, reconnecting?: boolean): void;
-    emit<K extends keyof VoiceEvents>(event: K, ...args: VoiceEvents[K]): boolean;
-    emit(event: string, ...args: any[]): boolean;
-    heartbeat(): void;
-    off<K extends keyof VoiceEvents>(event: K, listener: (...args: VoiceEvents[K]) => void): this;
-    off(event: string, listener: (...args: any[]) => void): this;
-    once<K extends keyof VoiceEvents>(event: K, listener: (...args: VoiceEvents[K]) => void): this;
-    once(event: string, listener: (...args: any[]) => void): this;
-    pause(): void;
-    play(resource: ReadableStream | string, options?: VoiceResourceOptions): void;
-    receive(type: "opus" | "pcm"): VoiceDataStream;
-    registerReceiveEventHandler(): void;
-    resume(): void;
-    sendAudioFrame(frame: Buffer): void;
-    sendUDPPacket(packet: Buffer): void;
-    sendWS(op: number, data: Record<string, unknown>): void;
-    setSpeaking(value: boolean): void;
-    setVolume(volume: number): void;
-    stopPlaying(): void;
-    switchChannel(channelID: string): void;
-    updateVoiceState(selfMute: boolean, selfDeaf: boolean): void;
-    on<K extends keyof VoiceEvents>(event: K, listener: (...args: VoiceEvents[K]) => void): this;
-    on(event: string, listener: (...args: any[]) => void): this;
-    toJSON(props?: string[]): JSONCache;
-  }
-
-  export class VoiceConnectionManager<T extends VoiceConnection = VoiceConnection> extends Collection<T> implements SimpleJSON {
-    constructor(vcObject: new () => T);
-    join(guildID: string, channelID: string, options: VoiceResourceOptions): Promise<VoiceConnection>;
-    leave(guildID: string): void;
-    switch(guildID: string, channelID: string): void;
-    voiceServerUpdate(data: VoiceServerUpdateData): void;
-    toJSON(props?: string[]): JSONCache;
-  }
-
-  export class VoiceDataStream extends EventEmitter {
-    type: "opus" | "pcm";
-    constructor(type: string);
-    on(event: "data", listener: (data: Buffer, userID: string, timestamp: number, sequence: number) => void): this;
   }
 
   export class VoiceState extends Base {
